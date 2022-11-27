@@ -42,7 +42,8 @@ export default {
         async onUpdateEmployee(employee) {
             try {
                 await employeeService.update(employee.id, employee);
-                this.message = 'Thông tin được cập nhật thành công.';
+                alert ('Thông tin được cập nhật thành công.');
+                this.$router.push({ name: 'employee' });
             } catch (error) {
                 console.log(error);
             }

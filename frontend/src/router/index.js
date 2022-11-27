@@ -3,12 +3,12 @@ import Employee from '@/views/Employee.vue';
 import Login from '@/views/Login.vue';
 const routes = [
     {
-        path: '/',
+        path: '/employees',
         name: 'employee',
         component: Employee,
     },
     {
-        path:'/login',
+        path:'/',
         name: 'login',
         component: Login,
     },

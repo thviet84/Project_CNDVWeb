@@ -1,6 +1,7 @@
 const express = require('express'); 
 const cors = require('cors');
 const employeeController = require('./controllers/employee.controller');
+const accountController = require('./controllers/account.controller');
 const ApiError = require('./api-error');
 
 const app = express();
@@ -24,6 +25,15 @@ app.route('/api/employee/:id')
     .get(employeeController.findOne) 
     .put(employeeController.update) 
     .delete(employeeController.delete);
+
+
+app.route('/api/account')
+    .get(accountController.findAll) 
+    .post(accountController.create) 
+    .delete(accountController.delete);
+    
+app.route('/api/login')
+    .post(accountController.login);
 
 app.use((req, res, next) => {
     return next(new ApiError(404, 'Resource not found')); 

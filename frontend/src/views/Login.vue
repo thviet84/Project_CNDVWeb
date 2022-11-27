@@ -1,26 +1,28 @@
 <template>
-    <section class="vh-100" >
+    <section class="vh-100">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                     <div class="card shadow-2-strong" style="border-radius: 1rem;">
                         <div class="card-body p-5 text-center">
 
-                            <h3 class="mb-5">Sign in</h3>
+                            <form @submit.prevent="loginAccount">
+                                <div class="form-group">
+                                    <h3>Welcome</h3>
+                                    <hr>
+                                    <label for="exampleInputEmail1">Email </label>
+                                    <input type="email" class="form-control" id="Email" aria-describedby="emailHelp"
+                                        placeholder="Enter email" v-model="account.email">
 
-                            <div class="form-outline mb-4">
-                                <input type="email" id="typeEmailX-2" class="form-control form-control-lg" v-model="user_email"/>
-                                <label class="form-label" for="typeEmailX-2">Email</label>
-                            </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Password</label>
+                                    <input type="password" class="form-control" id="Password" placeholder="Password"
+                                        v-model="account.pass">
+                                </div>
 
-                            <div class="form-outline mb-4">
-                                <input type="password" id="typePasswordX-2" class="form-control form-control-lg" v-model="user_password"/>
-                                <label class="form-label" for="typePasswordX-2" >Password</label>
-                            </div>
-
-                            <button class="btn btn-primary btn-lg btn-block" type="submit" @click="login">Login</button>
-
-                            <hr class="my-4">
+                                <button type="submit" class="btn btn-primary">Login</button>
+                            </form>
 
                         </div>
                     </div>
@@ -31,18 +33,36 @@
 </template>
 
 <script>
-import axios from 'axios';
+
+import { accountService } from '@/services/account.service';
 export default {
-    name: 'LoginView',
+    name: 'Login',
     data() {
         return {
-            user_email: '',
-            user_password: '',
+            account: {
+                email: '',
+                pass: '',
+            },
+            messageError: '',
         };
     },
-    methods:{
-        login(){
-            
+    methods: {
+        async loginAccount() {
+            if (this.account.email == '') this.messageError = 'Email cannot be empty';
+            else {
+                if (this.account.pass == '') this.messageError = 'Password cannot be empty';
+                else {
+                    try {
+                        const data = await accountService.login(this.account);
+                        if (data.message === 'Login success') {
+                            alert('Login successfull')
+                            this.$router.push({ name: 'employee' });
+                        } else this.messageError = data.message;
+                    } catch (error) {
+                        this.messageError = error;
+                    }
+                }
+            }
         }
     }
 }

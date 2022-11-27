@@ -26,7 +26,8 @@ export default {
         async onCreateEmployee(employee) {
             try {
                 await employeeService.create(employee);
-                this.message = 'Nhân viên đã được thêm thành công.';
+                alert('Nhân viên đã được thêm thành công.');
+                this.$router.push({ name: 'employee' });
             } catch (error) {
                 console.log(error);
             }
