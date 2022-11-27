@@ -37,16 +37,14 @@ exports.findAll = async (req, res, next) => {
 };
 exports.login = async (req, res, next) => {
     try {
-        const accountService1 = new AccountService();
-        const accountService2 = new AccountService();
-        const checkExist = await accountService1.findByEmail(req.body.email);
-        if(checkExist){
-            const account = await accountService2.login(req.body.email, req.body.pass);
-            if (account == undefined) return res.send({ message: 'Your password is incorrect' });
-            else return res.send({ message: 'Login success', ...account });
-        }
-        if(checkExist == undefined || checkExist == null)
-            return res.send({ message: 'Your Email is not exist' });
+        const accountService = new AccountService();
+        const account = await accountService.login(req.body.email, req.body.pass);
+        var data = { isValid: false  }
+        var data2 = { isValid: true, acc:  account }
+        if (account == undefined) 
+            return res.send(data);
+        else
+            return res.send(data2);
     } catch (error) {
         console.log(error);
         return next(new ApiError(500, 'An error occurred while login'));

@@ -42,26 +42,21 @@ export default {
             account: {
                 email: '',
                 pass: '',
-            },
-            messageError: '',
+            }
         };
     },
     methods: {
         async loginAccount() {
-            if (this.account.email == '') this.messageError = 'Email cannot be empty';
-            else {
-                if (this.account.pass == '') this.messageError = 'Password cannot be empty';
-                else {
-                    try {
-                        const data = await accountService.login(this.account);
-                        if (data.message === 'Login success') {
-                            alert('Login successfull')
-                            this.$router.push({ name: 'employee' });
-                        } else this.messageError = data.message;
-                    } catch (error) {
-                        this.messageError = error;
-                    }
+            try { 
+                const data = await accountService.login(this.account);
+                if (data.isValid) {
+                    alert('Welcome, user: ' + data.acc.name)
+                    this.$router.push({ name: 'employee' });
                 }
+                else 
+                    alert('Your account or password is not correct!')
+            } catch (error) {
+                alert(error)
             }
         }
     }
